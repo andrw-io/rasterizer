@@ -1,2 +1,2 @@
 # Rasterizer
-My attempt at making a basic rasterizer
+My attempt at making a basic rasterizer.
