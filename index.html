@@ -14,7 +14,6 @@
             justify-content: center;
             background: #111;
             color: white;
-            font-family: Arial, sans-serif;
         }
 
         canvas {
@@ -24,6 +23,7 @@
     </style>
 </head>
 <body>
+    <h1>testing asdf</h1>
     <canvas id="screen" width="600" height="400"></canvas>
   <script>
     const canvas = document.getElementById("screen");
@@ -45,6 +45,68 @@
       [0, 1], [0, 2], [0, 3],
       [1, 2], [2, 3], [3, 1]
     ];
+    let angle = 0;
+
+    function rotate_x(point, angle) {
+      const cos_a = Math.cos(angle);
+      const sin_a = Math.sin(angle);
+
+      return {
+        x: point.x,
+        y: point.y * cos_a - point.z * sin_a,
+        z: point.y * sin_a + point.z * cos_a
+      };
+    }
+
+    function rotate_y(point, angle) {
+      const cos_a = Math.cos(angle);
+      const sin_a = Math.sin(angle);
+
+      return {
+        x: point.x * cos_a + point.z * sin_a,
+        y: point.y,
+        z: -point.x * sin_a + point.z * cos_a
+      };
+    }
+    function project(point) {
+      // perspective projection.
+      const distance = 500;
+      const scale = distance / (distance + point.z);
+
+      return {
+        x: center_x + point.x * scale,
+        y: center_y + point.y * scale
+      };
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const transformed = vertices.map(vertex => {
+        let point = rotate_x(vertex, angle * 0.7);
+        point = rotate_y(point, angle);
+        return point;
+      });
+
+      const projected = transformed.map(project);
+
+      ctx.strokeStyle = "white";
+      ctx.lineWidth = 3;
+
+
+      // Draw small dots at the vertices so the 3D structure is easier to see.
+      ctx.fillStyle = "white";
+      for (const point of projected) {
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, 5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      angle += 0.02;
+      requestAnimationFrame(draw);
+    }
+
+    draw();
   </script>
 </body> 
 </html>
