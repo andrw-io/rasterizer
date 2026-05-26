@@ -25,6 +25,26 @@
 </head>
 <body>
     <canvas id="screen" width="600" height="400"></canvas>
-    
+  <script>
+    const canvas = document.getElementById("screen");
+    const ctx = canvas.getContext("2d");
+
+    const center_x = canvas.width / 2;
+    const center_y = canvas.height / 2;
+
+    // tetrahedron.
+    const vertices = [
+      { x: 0, y: -120, z: 0 },      // top point
+      { x: -120, y: 80, z: -80 },   // base point 1
+      { x: 120, y: 80, z: -80 },    // base point 2
+      { x: 0, y: 80, z: 120 }       // base point 3
+    ];
+
+    // Each pair tells us which vertices to connect with a line.
+    const edges = [
+      [0, 1], [0, 2], [0, 3],
+      [1, 2], [2, 3], [3, 1]
+    ];
+  </script>
 </body> 
 </html>
